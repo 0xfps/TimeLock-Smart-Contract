@@ -1,0 +1,16 @@
+{
+  "contracts": {
+    "QuickMath": "fe168a6c6767309d6a0a871d4bbb4806f274f709",
+    "TimeLock": "7351f91b2a7bd28eda521ea9c2a7db42ea95b307"
+  },
+  "tests": {
+    "tests/test_timelock.py": {
+      "coverage": false,
+      "isolated": false,
+      "results": ".",
+      "sha1": "12e3e205f5461092b10e1f4d8fa3f8e0c2f6891c",
+      "txhash": []
+    }
+  },
+  "tx": {}
+}
