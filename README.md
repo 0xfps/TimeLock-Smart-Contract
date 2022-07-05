@@ -13,7 +13,3 @@ Experiment with the contract below and learn the basics of a simple contract. De
 ##
 
 **Deployed at:** https://rinkeby.etherscan.io/address/0xaa78e24525bb85300c43B80F01cC78B6C9EF25F7
-
----
-
-Nnaemeka.
