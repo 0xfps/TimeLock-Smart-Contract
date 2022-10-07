@@ -2,15 +2,12 @@
 pragma solidity >0.6.0;
 
 /*
- * @title: 
- * @author: Anthony (fps) https://github.com/fps8k .
- * @dev: 
+ * @title: Time Lock.
+ * @author: Anthony (fps) https://github.com/0xfps.
+ * @dev: Time Lock.
 */
-
-library QuickMath
-{
-    function add(uint256 a, uint256 b) external pure returns(bool, uint256)
-    {
+library QuickMath {
+    function add(uint256 a, uint256 b) external pure returns(bool, uint256) {
         if((a + b) > ((2 ** 256) - 1))
             return(false, 0);
         else
@@ -19,48 +16,32 @@ library QuickMath
 }
 
 
-contract TimeLock
-{
+contract TimeLock {
     using QuickMath for uint256;
-
-
-    // Events.
-
-    event Locked(address, uint256);
-    event Withdraw(address, uint256);
-
-
-    struct Lock
-    {
+    
+    struct Lock {
         uint256 amount;
         uint256 time;
         uint256 last_lock;
     }
 
-
     mapping(address => Lock) private safe;
 
+    // Events.
+    event Locked(address, uint256);
+    event Withdraw(address, uint256);
 
-    modifier isValidSender()
-    {
+    modifier isValidSender() {
         require(msg.sender != address(0), "!Address");
         _;
     }
 
-
-
-
-    function deposit() public payable isValidSender
-    {
+    function deposit() public payable isValidSender {
         _deposit(msg.value);
         emit Locked(msg.sender, msg.value);
     }
 
-
-
-
-    function _deposit(uint256 _amount) private
-    {
+    function _deposit(uint256 _amount) private {
         uint256 current = safe[msg.sender].amount;
         (, uint256 addition) = current.add(_amount);
         safe[msg.sender].amount += addition;
@@ -69,14 +50,12 @@ contract TimeLock
         safe[msg.sender].last_lock = block.timestamp;
     }
 
-
-
-
-    function withdraw() public payable isValidSender
-    {
-        require(((safe[msg.sender].last_lock + safe[msg.sender].time) < (block.timestamp)), "Time not up");
+    function withdraw() public payable isValidSender {
+        require(
+            ((safe[msg.sender].last_lock + safe[msg.sender].time) < (block.timestamp)), 
+            "Time not up"
+        );
         require(safe[msg.sender].amount > 0, "Amount == 0");
-
 
         uint256 _amount = safe[msg.sender].amount;
         
@@ -87,10 +66,11 @@ contract TimeLock
         emit Withdraw(msg.sender, _amount);
     }
 
-
-
-
-    function seeSafe(address _address) public view isValidSender returns(uint256)
+    function seeSafe(address _address) 
+    public 
+    view 
+    isValidSender 
+    returns(uint256) 
     {
         require(safe[_address].time > 0, "! Exists");
         return safe[_address].amount;
